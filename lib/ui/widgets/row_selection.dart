@@ -8,55 +8,93 @@ class SelectionRow extends StatelessWidget {
   final String selectedCategory;
   final Function(String) onCategorySelected;
   final Map<String, String> displayLabels;
+  final Axis axis; // 정렬 방향 추가 (수평/수직)
 
-  const SelectionRow({
-    Key? key,
+  SelectionRow({
     required this.categories,
     required this.selectedCategory,
     required this.onCategorySelected,
     required this.displayLabels,
-  }) : super(key: key);
+    this.axis = Axis.horizontal, // 기본은 수평
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(categories.length * 2 - 1, (index) {
-        if (index.isOdd) {
-          // 구분선
-          return Container(
-            width: 1,
-            height: 24,
-            margin: const EdgeInsets.symmetric(horizontal: 8.0),
-            decoration: BoxDecoration(
+    if (axis == Axis.horizontal) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(categories.length * 2 - 1, (index) {
+          if (index.isOdd) {
+            // 구분선 (수평)
+            return Container(
+              width: 1,
+              height: 24,
+              margin: const EdgeInsets.symmetric(horizontal: 8.0),
               color: Color(0xffd6dde3),
-              borderRadius: BorderRadius.circular(1),
-            ),
-          );
-        } else {
-          // 카테고리 항목
-          String category = categories[index ~/ 2];
-          ButtonVariant variant;
-          if (index ~/ 2 == 0) {
-            variant = ButtonVariant.left;
-          } else if (index ~/ 2 == categories.length - 1) {
-            variant = ButtonVariant.right;
+            );
           } else {
-            variant = ButtonVariant.middle;
+            // 카테고리 버튼
+            String category = categories[index ~/ 2];
+            ButtonVariant variant;
+            if (index ~/ 2 == 0) {
+              variant = ButtonVariant.left;
+            } else if (index ~/ 2 == categories.length - 1) {
+              variant = ButtonVariant.right;
+            } else {
+              variant = ButtonVariant.middle;
+            }
+
+            bool isSelected = category == selectedCategory;
+
+            return StyledButton(
+              label: displayLabels[category] ?? category,
+              onPressed: () {
+                onCategorySelected(category);
+              },
+              variant: variant,
+              selected: isSelected,
+            );
           }
+        }),
+      );
+    } else {
+      // 수직 정렬
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(categories.length * 2 - 1, (index) {
+          if (index.isOdd) {
+            // 구분선 (수직)
+            return Container(
+              width: 1,
+              height: 24,
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
+              color: Color(0xffd6dde3),
+            );
+          } else {
+            // 카테고리 버튼
+            String category = categories[index ~/ 2];
+            ButtonVariant variant;
+            if (index ~/ 2 == 0) {
+              variant = ButtonVariant.left;
+            } else if (index ~/ 2 == categories.length - 1) {
+              variant = ButtonVariant.right;
+            } else {
+              variant = ButtonVariant.middle;
+            }
 
-          bool isSelected = category == selectedCategory;
+            bool isSelected = category == selectedCategory;
 
-          return StyledButton(
-            label: displayLabels[category] ?? category,
-            onPressed: () {
-              onCategorySelected(category);
-            },
-            variant: variant,
-            isSelected: isSelected,
-          );
-        }
-      }),
-    );
+            return StyledButton(
+              label: displayLabels[category] ?? category,
+              onPressed: () {
+                onCategorySelected(category);
+              },
+              variant: variant,
+              selected: isSelected,
+            );
+          }
+        }),
+      );
+    }
   }
 }

@@ -1,4 +1,4 @@
-// lib/ui/widgets/styled_button.dart
+// lib/ui/widgets/button_style.dart
 
 import 'package:flutter/material.dart';
 
@@ -9,56 +9,69 @@ class StyledButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
   final ButtonVariant variant;
-  final bool isSelected;
+  final bool selected;
 
   const StyledButton({
     Key? key,
     required this.label,
     required this.onPressed,
     this.variant = ButtonVariant.middle,
-    this.isSelected = false,
+    this.selected = false,
   }) : super(key: key);
-
-  BorderRadius _getBorderRadius() {
-    switch (variant) {
-      case ButtonVariant.left:
-        return BorderRadius.only(
-          topLeft: Radius.circular(8.0),
-          bottomLeft: Radius.circular(8.0),
-        );
-      case ButtonVariant.right:
-        return BorderRadius.only(
-          topRight: Radius.circular(8.0),
-          bottomRight: Radius.circular(8.0),
-        );
-      case ButtonVariant.middle:
-        return BorderRadius.zero;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: _getBorderRadius(),
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? const Color.fromARGB(210, 189, 84, 207)
-                : Colors.grey[100],
-            borderRadius: _getBorderRadius(),
-          ),
-          padding: EdgeInsets.symmetric(vertical: 12.0),
-          child: Center(
-            child: Text(
-              label,
-              style: TextStyle(
-                color: isSelected
-                    ? Colors.grey[100]
-                    : Color.fromARGB(210, 144, 67, 157),
-                fontWeight: FontWeight.bold,
+    // BorderRadius 설정
+    BorderRadius borderRadius;
+    switch (variant) {
+      case ButtonVariant.left:
+        borderRadius = BorderRadius.only(
+          topLeft: Radius.circular(24.0),
+          bottomLeft: Radius.circular(24.0),
+        );
+        break;
+      case ButtonVariant.right:
+        borderRadius = BorderRadius.only(
+          topRight: Radius.circular(24.0),
+          bottomRight: Radius.circular(24.0),
+        );
+        break;
+      case ButtonVariant.middle:
+        borderRadius = BorderRadius.zero;
+    }
+
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: label,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          color: selected ? Colors.grey[300] : Colors.white,
+          borderRadius: borderRadius,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: borderRadius,
+            onTap: onPressed,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                  color: selected ? Colors.grey[800] : Colors.black,
+                ),
               ),
             ),
           ),
