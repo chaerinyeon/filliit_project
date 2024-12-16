@@ -1,7 +1,7 @@
 // lib/ui/pages/category/view/sub_tab/call/new_year_card.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_fillit_app/ui/pages/home/widgets/event_card/%08custom_card.dart';
+import 'package:flutter_fillit_app/ui/pages/home/widgets/event_card/widgets/%08custom_card.dart';
 
 class SecCard extends StatelessWidget {
   @override

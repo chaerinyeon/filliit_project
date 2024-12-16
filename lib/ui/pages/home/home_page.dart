@@ -61,7 +61,9 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            CommunityPosts(),
+            CommunityPosts(
+              allPosts: [],
+            ),
           ],
         ),
       ),

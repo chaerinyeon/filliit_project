@@ -2,27 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fillit_app/ui/pages/category/model/community_post.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AllCommunityTabs extends StatefulWidget {
-  final Map<String, List<CommunityPost>> postsByCategory; // 카테고리별 게시글 데이터
+class CommunityPostList extends StatefulWidget {
+  final List<CommunityPost> posts;
 
-  const AllCommunityTabs({
+  const CommunityPostList({
     Key? key,
-    required this.postsByCategory,
+    required this.posts,
   }) : super(key: key);
 
   @override
-  _AllCommunityTabsState createState() => _AllCommunityTabsState();
+  _CommunityPostListState createState() => _CommunityPostListState();
 }
 
-class _AllCommunityTabsState extends State<AllCommunityTabs> {
-  late List<CommunityPost> _allPosts; // 모든 게시글을 하나의 리스트로 병합
-  final ScrollController _scrollController = ScrollController();
+class _CommunityPostListState extends State<CommunityPostList> {
+  late List<CommunityPost> _posts;
 
   @override
   void initState() {
     super.initState();
-    _allPosts =
-        widget.postsByCategory.values.expand((list) => list).toList(); // 병합
+    _posts = widget.posts;
     _loadClickCounts();
   }
 
@@ -30,7 +28,7 @@ class _AllCommunityTabsState extends State<AllCommunityTabs> {
     try {
       final prefs = await SharedPreferences.getInstance();
       setState(() {
-        _allPosts.forEach((post) {
+        _posts.forEach((post) {
           post.clickCount = prefs.getInt(post.name) ?? 0;
         });
         _sortPostsByClickCount();
@@ -49,10 +47,6 @@ class _AllCommunityTabsState extends State<AllCommunityTabs> {
     }
   }
 
-  void _sortPostsByClickCount() {
-    _allPosts.sort((a, b) => b.clickCount.compareTo(a.clickCount));
-  }
-
   void _handlePostClick(CommunityPost post) {
     setState(() {
       post.clickCount += 1;
@@ -64,28 +58,26 @@ class _AllCommunityTabsState extends State<AllCommunityTabs> {
     );
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+  void _sortPostsByClickCount() {
+    _posts.sort((a, b) => b.clickCount.compareTo(a.clickCount));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_allPosts.isEmpty) {
+    if (_posts.isEmpty) {
       return Center(
         child: Text(
-          '전체 커뮤니티 게시글이 없습니다.',
+          '커뮤니티 포스트가 없습니다.',
           style: TextStyle(fontSize: 18, color: Colors.grey),
         ),
       );
     }
 
     return ListView.builder(
-      controller: _scrollController,
-      itemCount: _allPosts.length,
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      itemCount: _posts.length,
       itemBuilder: (context, index) {
-        final post = _allPosts[index];
+        final post = _posts[index];
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Card(
@@ -95,7 +87,6 @@ class _AllCommunityTabsState extends State<AllCommunityTabs> {
             elevation: 1,
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: Colors.blueAccent,
                 child: Text(
                   post.name.isNotEmpty ? post.name[0] : '',
                   style: const TextStyle(color: Colors.white),
@@ -103,7 +94,7 @@ class _AllCommunityTabsState extends State<AllCommunityTabs> {
                 ),
               ),
               title: Text(post.name),
-              subtitle: Text('${post.artist}'), // 카테고리 추가
+              subtitle: Text(post.artist),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
