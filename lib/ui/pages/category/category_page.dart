@@ -1,7 +1,7 @@
 // lib/ui/pages/category/category_page.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_fillit_app/ui/pages/category/model/tab_item.dart';
+import 'package:flutter_fillit_app/data/model/tab_item.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/call_target/call_personal/call_personal_family.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/call_target/call_personal/call_personal_friend.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/call_target/call_personal/call_personal_others.dart';

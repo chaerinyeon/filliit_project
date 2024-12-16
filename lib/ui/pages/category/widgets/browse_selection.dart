@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:flutter_fillit_app/ui/pages/category/model/tab_item.dart';
+import 'package:flutter_fillit_app/data/model/tab_item.dart';
 
 class BrowseSelection extends StatefulWidget {
   final List<TabItem> tabs;

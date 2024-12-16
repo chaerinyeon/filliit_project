@@ -1,54 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_fillit_app/ui/pages/category/model/community_post.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// lib/ui/pages/community/community_page.dart
 
-class CommunityPage extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_fillit_app/ui/pages/community/commu_tabs/widgets/community_post_list.dart';
+import 'package:flutter_fillit_app/ui/pages/community/community_post_view_model.dart';
+import 'package:flutter_fillit_app/ui/pages/community/create_post/create_post_page.dart';
+import 'package:flutter_fillit_app/ui/pages/home/widgets/popular_community_posts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class CommunityPage extends ConsumerStatefulWidget {
   @override
   _CommunityPageState createState() => _CommunityPageState();
 }
 
-class _CommunityPageState extends State<CommunityPage>
+class _CommunityPageState extends ConsumerState<CommunityPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // 카테고리별 게시글
-  final Map<String, List<CommunityPost>> _postsByCategory = {
-    '전체': [],
-    '정보공유': [],
-    'QnA': [],
-    '자유게시판': [],
-  };
+  final List<String> _tabCategories = ['전체', '정보공유', 'QnA', '자유게시판'];
 
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: _postsByCategory.keys.length, vsync: this);
-    _initializePosts();
-  }
-
-  // 초기 게시글 데이터를 설정
-  void _initializePosts() {
-    final initialPosts = {
-      '정보공유': [
-        CommunityPost(name: '정보 공유 글 1', artist: '작성자 A'),
-        CommunityPost(name: '정보 공유 글 2', artist: '작성자 B'),
-      ],
-      'QnA': [
-        CommunityPost(name: 'QnA 질문 1', artist: '작성자 C'),
-        CommunityPost(name: 'QnA 질문 2', artist: '작성자 D'),
-      ],
-      '자유게시판': [
-        CommunityPost(name: '자유 글 1', artist: '작성자 E'),
-        CommunityPost(name: '자유 글 2', artist: '작성자 F'),
-      ],
-    };
-
-    // 각 카테고리 게시글을 전체 탭에도 등록
-    initialPosts.forEach((category, posts) {
-      _postsByCategory[category] = posts;
-      _postsByCategory['전체']!.addAll(posts);
-    });
+    _tabController = TabController(length: _tabCategories.length, vsync: this);
   }
 
   @override
@@ -57,65 +30,11 @@ class _CommunityPageState extends State<CommunityPage>
     super.dispose();
   }
 
-  // 게시글 리스트를 출력하는 위젯
-  Widget _buildPostList(String category) {
-    final posts = _postsByCategory[category]!;
-    return ListView.builder(
-      itemCount: posts.length,
-      itemBuilder: (context, index) {
-        final post = posts[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            elevation: 1,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.blueAccent,
-                child: Text(
-                  post.name.isNotEmpty ? post.name[0] : '',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-              title: Text(post.name),
-              subtitle: Text(post.artist),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.arrow_forward_ios),
-                  const SizedBox(height: 4),
-                  Text('클릭수: ${post.clickCount}'),
-                ],
-              ),
-              onTap: () {
-                setState(() {
-                  post.clickCount += 1;
-                  _saveClickCount(post.name, post.clickCount);
-                  _postsByCategory['전체']!
-                      .sort((a, b) => b.clickCount.compareTo(a.clickCount));
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${post.name} 클릭됨')),
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  // 클릭 수 저장
-  Future<void> _saveClickCount(String postName, int count) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(postName, count);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final tabTitles = _postsByCategory.keys.toList();
+    final tabTitles = _tabCategories;
+    final allPosts = ref.watch(postViewModelProvider); // 모든 게시글을 가져옴
+    final isLoading = allPosts.isEmpty; // 간단한 로딩 상태 예시
 
     return Scaffold(
       appBar: AppBar(
@@ -131,10 +50,43 @@ class _CommunityPageState extends State<CommunityPage>
           unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children:
-            tabTitles.map((category) => _buildPostList(category)).toList(),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                // 인기 게시글 섹션
+                PopularPosts(),
+                // 탭별 게시글 리스트
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: _tabCategories.map((category) {
+                      // 카테고리에 해당하는 게시글 필터링
+                      final posts = ref
+                          .read(postViewModelProvider.notifier)
+                          .getPostsByCategory(category);
+                      return CommunityPostList(
+                        category: category,
+                        posts: posts,
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.deepPurpleAccent,
+        onPressed: () {
+          // CreateCommunityPostPage로 이동
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => CreateCommunityPostPage()),
+          );
+        },
+        child: Icon(
+          Icons.add_rounded,
+          color: Colors.white,
+        ),
       ),
     );
   }
