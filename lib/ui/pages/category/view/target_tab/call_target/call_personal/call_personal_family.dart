@@ -45,6 +45,29 @@ class _CallPersonalFamilyState extends State<CallPersonalFamily> {
                   '상황이 선택되지 않았습니다.',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
+          // 상황이 선택되었을 때만 ElevatedButton 표시
+          _selectedSituation != null
+              ? ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Data title'),
+                        content: Text('전화 , 개인->가족 + $_selectedSituation 상황'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('확인'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Text('click me'),
+                )
+              : SizedBox.shrink(), // 상황이 선택되지 않았을 때 빈 공간을 차지하지 않음
         ],
       ),
     );

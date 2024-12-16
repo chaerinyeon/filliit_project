@@ -320,6 +320,7 @@ class _CategoryPageState extends State<CategoryPage>
   @override
   Widget build(BuildContext context) {
     // 메인 탭 아이템 정의 (배지 포함)
+    // ignore: unused_local_variable
     final mainTabItems = _phraseCategories.map((category) {
       int? badgeCount;
       if (category == 'call') badgeCount = 2; // 'call' 탭에 배지 추가
@@ -412,7 +413,7 @@ class _CategoryPageState extends State<CategoryPage>
                                   _subSubCategories[_selectedSubTab]![index];
                               return Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                    const EdgeInsets.symmetric(vertical: 0),
                                 child: ElevatedButton(
                                   onPressed: () {
                                     _onSubSubCategorySelected(subSubTab);
@@ -428,11 +429,11 @@ class _CategoryPageState extends State<CategoryPage>
                                                 255, 136, 136, 136)
                                             : const Color.fromARGB(
                                                 255, 255, 255, 255),
+
                                     fixedSize:
                                         Size(double.infinity, 50), // 동일한 크기
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(0),
-                                      side: BorderSide(color: Colors.grey),
                                     ),
                                   ),
                                   child: Align(
