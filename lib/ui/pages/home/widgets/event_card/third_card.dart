@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fillit_app/ui/pages/home/widgets/event_card/widgets/%08custom_card.dart';
+import 'package:flutter_fillit_app/ui/pages/home/widgets/event_card/custom_widgets/%08custom_card.dart';
 
 class ThirdCard extends StatelessWidget {
   @override

@@ -38,7 +38,7 @@ import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_tar
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_meeting.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_presentation.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_report.dart';
-import 'package:flutter_fillit_app/ui/widgets/row_selection.dart';
+import 'package:flutter_fillit_app/ui/widgets/custom/row_selection.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CategoryPage extends StatefulWidget {

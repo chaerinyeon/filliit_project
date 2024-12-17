@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fillit_app/ui/widgets/row_selection.dart';
+import 'package:flutter_fillit_app/ui/widgets/custom/row_selection.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MyPage extends StatefulWidget {

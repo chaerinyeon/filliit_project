@@ -10,10 +10,10 @@ class PostViewModel extends StateNotifier<List<CommunityPost>> {
   late final StreamSubscription<List<CommunityPost>> _subscription;
 
   PostViewModel(this._postRepository) : super([]) {
-    _subscription = _postRepository.getPostsStream().listen(
+    _subscription = _postRepository.streamAllPosts().listen(
       (posts) {
         print('PostViewModel received ${posts.length} posts');
-        // 상태를 업데이트 (이미 최근 작성 순으로 정렬됨)
+        // 상태를 업데이트 (이미 clickCount 순으로 정렬됨)
         state = posts;
       },
       onError: (error) {
@@ -36,12 +36,17 @@ class PostViewModel extends StateNotifier<List<CommunityPost>> {
     required String category,
   }) async {
     try {
-      await _postRepository.addPost(
-        title: title,
+      // Initialize clickCount to 0 and createdAt will be set in repository
+      final newPost = CommunityPost(
+        id: '', // Firestore will assign the ID
         writer: writer,
+        title: title,
         content: content,
+        clickCount: 0,
+        createdAt: DateTime.now(),
         category: category,
       );
+      await _postRepository.addPost(newPost);
       print('Post added successfully');
     } catch (e) {
       print('Error in addPost: $e');

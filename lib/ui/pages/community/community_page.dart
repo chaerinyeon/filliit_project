@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fillit_app/ui/pages/community/commu_tabs/widgets/community_post_list.dart';
 import 'package:flutter_fillit_app/ui/pages/community/community_post_view_model.dart';
 import 'package:flutter_fillit_app/ui/pages/community/create_post/create_post_page.dart';
-import 'package:flutter_fillit_app/ui/pages/home/widgets/popular_community_posts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CommunityPage extends ConsumerStatefulWidget {
@@ -55,7 +54,7 @@ class _CommunityPageState extends ConsumerState<CommunityPage>
           : Column(
               children: [
                 // 인기 게시글 섹션
-                PopularPosts(),
+
                 // 탭별 게시글 리스트
                 Expanded(
                   child: TabBarView(

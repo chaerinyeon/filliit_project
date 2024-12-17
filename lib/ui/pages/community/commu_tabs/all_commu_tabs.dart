@@ -2,19 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_fillit_app/data/model/community_post.dart';
+import 'package:flutter_fillit_app/ui/pages/community/commu_detail/community_post_detail_page.dart';
 import 'package:flutter_fillit_app/ui/pages/community/community_post_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 재사용 가능한 게시글 항목 위젯
 class CommunityPostItem extends StatelessWidget {
   final CommunityPost post;
-  final Color avatarColor;
   final VoidCallback onTap;
 
   const CommunityPostItem({
     Key? key,
     required this.post,
-    required this.avatarColor,
     required this.onTap,
   }) : super(key: key);
 
@@ -29,7 +28,6 @@ class CommunityPostItem extends StatelessWidget {
         elevation: 1,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: avatarColor,
             child: Text(
               post.title.isNotEmpty ? post.title[0] : '',
               style: TextStyle(color: Colors.white),
@@ -126,27 +124,6 @@ class _AllCommunityTabsState extends ConsumerState<AllCommunityTabs> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  // 카테고리별 색상 설정 함수
-  Color _getCategoryColor(String category) {
-    switch (category) {
-      case '정보공유':
-        return Colors.blueAccent;
-      case 'QnA':
-        return Colors.greenAccent;
-      case '자유게시판':
-        return Colors.orangeAccent;
-      case '전체':
-      default:
-        return Colors.purpleAccent;
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (_allPosts.isEmpty) {
       return Center(
@@ -164,44 +141,9 @@ class _AllCommunityTabsState extends ConsumerState<AllCommunityTabs> {
         final post = _allPosts[index];
         return CommunityPostItem(
           post: post,
-          avatarColor: _getCategoryColor(post.category),
           onTap: () => _handlePostClick(post),
         );
       },
-    );
-  }
-}
-
-// Optional: 상세보기 페이지
-class PostDetailPage extends StatelessWidget {
-  final CommunityPost post;
-
-  const PostDetailPage({Key? key, required this.post}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(post.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          // 내용이 길어질 경우 스크롤 가능하도록 설정
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('작성자: ${post.writer}',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 16),
-              Text(post.content, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 24),
-              Text('클릭수: ${post.clickCount}',
-                  style: TextStyle(fontSize: 14, color: Colors.grey[600])),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

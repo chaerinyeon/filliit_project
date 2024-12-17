@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fillit_app/ui/pages/home/widgets/editable_buttons_box.dart';
 import 'package:flutter_fillit_app/ui/pages/home/widgets/event_card/event_card_section.dart';
-import 'package:flutter_fillit_app/ui/pages/home/widgets/popular_community_posts.dart';
+import 'package:flutter_fillit_app/ui/pages/home/widgets/popular_community/popular_community_posts.dart';
 import 'package:flutter_fillit_app/ui/pages/home/widgets/search_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 

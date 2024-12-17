@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_fillit_app/data/model/community_post.dart';
-import 'package:flutter_fillit_app/ui/pages/community/commu_tabs/all_commu_tabs.dart';
+import 'package:flutter_fillit_app/ui/pages/community/commu_detail/community_post_detail_page.dart';
 import 'package:flutter_fillit_app/ui/pages/community/community_post_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -44,7 +44,8 @@ class CommunityPostList extends ConsumerWidget {
             elevation: 1,
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: Colors.blueAccent, // 원하는 색상으로 변경
+                backgroundColor:
+                    const Color.fromARGB(255, 137, 139, 142), // 원하는 색상으로 변경
                 child: Text(
                   post.title.isNotEmpty ? post.title[0] : '',
                   style: TextStyle(color: Colors.white),

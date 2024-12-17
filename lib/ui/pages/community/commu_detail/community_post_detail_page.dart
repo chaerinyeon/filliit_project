@@ -1,4 +1,4 @@
-// lib/ui/pages/community/post_detail_page.dart
+// lib/ui/pages/community/commu_detail/community_post_detail_page.dart
 
 import 'package:flutter/material.dart';
 import 'package:flutter_fillit_app/data/model/community_post.dart';
@@ -19,13 +19,22 @@ class PostDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('작성자: ${post.writer}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
-            Text(post.content, style: TextStyle(fontSize: 16)),
-            SizedBox(height: 24),
-            Text('클릭수: ${post.clickCount}',
-                style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+            Text('작성자: ${post.writer}', style: TextStyle(fontSize: 16.0)),
+            SizedBox(height: 8.0),
+            Text(post.content, style: TextStyle(fontSize: 18.0)),
+            SizedBox(height: 16.0),
+            Row(
+              children: [
+                Icon(Icons.visibility, size: 20.0, color: Colors.grey),
+                SizedBox(width: 4.0),
+                Text('${post.clickCount}'),
+              ],
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              '작성일: ${post.createdAt.toLocal()}',
+              style: TextStyle(color: Colors.grey),
+            ),
           ],
         ),
       ),

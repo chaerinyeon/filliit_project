@@ -1,36 +1,49 @@
-// lib/models/community_post.dart
+// lib/data/model/community_post.dart
 
-import 'package:flutter_fillit_app/ui/widgets/custom/time_stamp.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-part 'community_post.g.dart';
-
-@JsonSerializable()
 class CommunityPost {
-  final String id; // Firestore 문서 ID
-  final String title;
+  final String id;
   final String writer;
-  final String content; // 게시글 내용
-  final String category; // '정보공유', 'QnA', '자유게시판'
+  final String title;
+  final String content;
   final int clickCount;
-
-  @TimestampConverter()
-  final DateTime createdAt; // 게시글 생성 시간
+  final DateTime createdAt;
+  final String category;
 
   CommunityPost({
     required this.id,
-    required this.title,
     required this.writer,
+    required this.title,
     required this.content,
-    required this.category,
-    this.clickCount = 0,
+    required this.clickCount,
     required this.createdAt,
+    required this.category,
   });
 
-  // JSON에서 객체로 변환
-  factory CommunityPost.fromJson(Map<String, dynamic> json) =>
-      _$CommunityPostFromJson(json);
+  // Factory constructor to create a CommunityPost from Firestore document
+  factory CommunityPost.fromDocument(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return CommunityPost(
+      id: doc.id,
+      writer: data['writer'] ?? '',
+      title: data['title'] ?? '',
+      content: data['content'] ?? '',
+      clickCount: data['clickCount'] ?? 0,
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      category: data['category'] ?? '전체', // Default to '전체' (All)
+    );
+  }
 
-  // 객체를 JSON으로 변환
-  Map<String, dynamic> toJson() => _$CommunityPostToJson(this);
+  // Convert CommunityPost to Map (useful for Firestore)
+  Map<String, dynamic> toMap() {
+    return {
+      'writer': writer,
+      'title': title,
+      'content': content,
+      'clickCount': clickCount,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'category': category,
+    };
+  }
 }
