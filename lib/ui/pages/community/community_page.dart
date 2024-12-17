@@ -38,6 +38,7 @@ class _CommunityPageState extends ConsumerState<CommunityPage>
     return Scaffold(
       appBar: AppBar(
         title: Text('커뮤니티 페이지'),
+        actions: [],
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,

@@ -1,18 +1,20 @@
 // lib/ui/pages/category/view/sub_tab/call/call_personal_family.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_fillit_app/ui/pages/category/view/situation_tab/message/message_work/message_work_high/message_work_high_etc/message_work_high_etc.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/widgets/situation_radio_buttons.dart';
 
-class MessagePersonalFriend extends StatefulWidget {
+class MessageWorkHigh extends StatefulWidget {
   @override
-  _MessagePersonalFriendState createState() => _MessagePersonalFriendState();
+  _MessageWorkHighState createState() => _MessageWorkHighState();
 }
 
-class _MessagePersonalFriendState extends State<MessagePersonalFriend> {
+class _MessageWorkHighState extends State<MessageWorkHigh> {
   final List<String> _callPersonalFamilySituations = [
-    '옵션 1',
-    '옵션 2',
-    '옵션 3',
+    '업무 보고',
+    '일정 조율',
+    '전략 회의',
+    '기타'
   ];
 
   String? _selectedSituation;
@@ -57,7 +59,14 @@ class _MessagePersonalFriendState extends State<MessagePersonalFriend> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  //일단 보여주기 위한 페이지이동..
+
+                                  builder: (_) => MessageWorkHighEtc(),
+                                ),
+                              );
                             },
                             child: Text('확인'),
                           ),

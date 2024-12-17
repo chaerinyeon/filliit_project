@@ -35,9 +35,9 @@ import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_tar
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_study/message_study_assignment.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_study/message_study_exam.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_study/message_study_group.dart';
-import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_meeting.dart';
-import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_presentation.dart';
-import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_report.dart';
+import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_high.dart';
+import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_mid.dart';
+import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/message_target/message_work/message_work_row.dart';
 import 'package:flutter_fillit_app/ui/widgets/custom/row_selection.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -86,7 +86,7 @@ class _CategoryPageState extends State<CategoryPage>
   // 서브 서브 카테고리에 따른 리스트
   final Map<String, List<String>> _subSubCategories = {
     '개인': ['친구', '가족', '기타모임'],
-    '업무': ['회의', '보고', '프레젠테이션'],
+    '업무': ['높은 존칭 수준', '보통 존칭 수준', '낮은 존칭 수준'],
     '학업': ['과제', '시험', '스터디'],
     '서비스/문의': ['고객지원', '피드백', '문의사항'],
     '긴급/비상': ['응급처치', '재난대응', '긴급연락처'],
@@ -180,11 +180,11 @@ class _CategoryPageState extends State<CategoryPage>
             }
           case '업무':
             switch (subSubTab) {
-              case '회의':
+              case 'CEO':
                 return CallWorkMeeting();
-              case '보고':
+              case 'Mgr':
                 return CallWorkReport();
-              case '프레젠테이션':
+              case 'TL':
                 return CallWorkPresentation();
               default:
                 return Center(child: Text('$subSubTab Content'));
@@ -240,12 +240,12 @@ class _CategoryPageState extends State<CategoryPage>
             }
           case '업무':
             switch (subSubTab) {
-              case '회의':
-                return MessageWorkMeeting();
-              case '보고':
-                return MessageWorkReport();
-              case '프레젠테이션':
-                return MessageWorkPresentation();
+              case '높은 존칭 수준':
+                return MessageWorkHigh();
+              case '보통의 존칭 수준':
+                return MessageWorkMid();
+              case '낮은 존칭 수준':
+                return MessageWorkRow();
               default:
                 return Center(child: Text('$subSubTab Content'));
             }
@@ -367,7 +367,7 @@ class _CategoryPageState extends State<CategoryPage>
                 categories: _phraseCategories,
                 selectedCategory: _selectedPhraseCategory,
                 onCategorySelected: _onMainCategorySelected, // 콜백 전달
-                displayLabels: {
+                displayLabels: const {
                   'call': '전화',
                   'message': '메세지',
                   'mail': '메일',

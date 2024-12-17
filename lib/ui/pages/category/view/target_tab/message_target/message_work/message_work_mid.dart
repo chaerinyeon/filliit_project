@@ -1,14 +1,12 @@
-// lib/ui/pages/category/view/sub_tab/call/call_personal_family.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_fillit_app/ui/pages/category/view/target_tab/widgets/situation_radio_buttons.dart';
 
-class MessagePersonalFriend extends StatefulWidget {
+class MessageWorkMid extends StatefulWidget {
   @override
-  _MessagePersonalFriendState createState() => _MessagePersonalFriendState();
+  _MessageWorkMidState createState() => _MessageWorkMidState();
 }
 
-class _MessagePersonalFriendState extends State<MessagePersonalFriend> {
+class _MessageWorkMidState extends State<MessageWorkMid> {
   final List<String> _callPersonalFamilySituations = [
     '옵션 1',
     '옵션 2',
