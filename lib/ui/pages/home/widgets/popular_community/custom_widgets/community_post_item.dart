@@ -17,7 +17,7 @@ class CommunityPostItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(post.title),
-      subtitle: Text('작성자: ${post.writer}'),
+      subtitle: Text('카테고리: ${post.category}'),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

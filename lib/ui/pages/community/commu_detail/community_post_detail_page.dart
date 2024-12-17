@@ -23,17 +23,20 @@ class PostDetailPage extends StatelessWidget {
             SizedBox(height: 8.0),
             Text(post.content, style: TextStyle(fontSize: 18.0)),
             SizedBox(height: 16.0),
+            Text(
+              '''카테고리 : ${post.category}
+작성일: ${post.createdAt.toLocal()}''',
+              style: TextStyle(color: const Color.fromARGB(255, 76, 75, 75)),
+            ),
+            SizedBox(
+              height: 30,
+            ),
             Row(
               children: [
                 Icon(Icons.visibility, size: 20.0, color: Colors.grey),
                 SizedBox(width: 4.0),
                 Text('${post.clickCount}'),
               ],
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              '작성일: ${post.createdAt.toLocal()}',
-              style: TextStyle(color: Colors.grey),
             ),
           ],
         ),

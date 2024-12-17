@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fillit_app/ui/pages/community/community_page.dart';
 import 'package:flutter_fillit_app/ui/pages/home/widgets/editable_buttons_box.dart';
 import 'package:flutter_fillit_app/ui/pages/home/widgets/event_card/event_card_section.dart';
 import 'package:flutter_fillit_app/ui/pages/home/widgets/popular_community/popular_community_posts.dart';
@@ -52,9 +53,11 @@ class HomePage extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       // 인기커뮤니티 전체보기 버튼 클릭 시 동작
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('인기커뮤니티 전체보기 클릭됨')),
-                      );
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CommunityPage(),
+                          ));
                     },
                     icon: Icon(MdiIcons.chevronRight),
                   ),
