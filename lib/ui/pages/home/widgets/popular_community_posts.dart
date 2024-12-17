@@ -24,15 +24,6 @@ class PopularPosts extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // 인기 게시글 타이틀
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            '인기 커뮤니티 글',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-        // 인기 게시글 리스트
         Container(
           height: 300, // 원하는 높이로 조절하세요
           width: double.infinity,
